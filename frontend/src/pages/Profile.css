@@ -1,0 +1,61 @@
+.profile-container {
+    width: 100%;
+    max-width: var(--container-max-width-medium);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--container-padding-sm);
+}
+
+/* 响应式padding */
+@media (min-width: 768px) {
+    .profile-container {
+        padding: var(--spacing-xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .profile-container {
+        padding: var(--spacing-xl) var(--container-padding-lg);
+    }
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: var(--spacing-2xl);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    margin-bottom: 30px;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-item:last-child {
+    border-bottom: none;
+}
+
+.profile-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.profile-value {
+    color: #333;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+}
+

@@ -1,0 +1,162 @@
+/* 宝箱容器 */
+.treasure-chests-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 让宝箱可以点击，但不阻挡其他交互 */
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.treasure-chests-container .treasure-chest {
+    pointer-events: auto; /* 宝箱本身可以点击 */
+}
+
+/* 评论摘要 */
+.aigc-comment-summary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.aigc-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.aigc-section-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+}
+
+.aigc-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.aigc-summary-text {
+    line-height: 1.8;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: pre-wrap;
+}
+
+/* 歌词配图 */
+.aigc-lyric-images {
+    margin-top: 30px;
+}
+
+.aigc-lyric-images .aigc-section-header {
+    margin-bottom: 20px;
+}
+
+.aigc-lyric-images .aigc-section-header h3 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.aigc-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.aigc-image-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.aigc-image-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.aigc-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 比例 */
+    background: #f5f5f5;
+    overflow: hidden;
+}
+
+.aigc-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.aigc-image-item:hover .aigc-image-wrapper img {
+    transform: scale(1.05);
+}
+
+.aigc-image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+    background: #f5f5f5;
+}
+
+.aigc-image-caption {
+    padding: 12px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .aigc-images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .aigc-comment-summary {
+        padding: 20px;
+    }
+
+    .aigc-section-header h3 {
+        font-size: 18px;
+    }
+
+    .aigc-summary-text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .aigc-images-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

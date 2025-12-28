@@ -1,0 +1,58 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+    padding: var(--spacing-3xl) var(--container-padding-sm);
+}
+
+/* 响应式padding */
+@media (min-width: 768px) {
+    .register-container {
+        padding: var(--spacing-3xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .register-container {
+        padding: var(--spacing-3xl) var(--container-padding-lg);
+    }
+}
+
+.register-card {
+    width: 100%;
+    max-width: var(--container-max-width-narrow);
+    background: white;
+    border-radius: 12px;
+    padding: var(--spacing-3xl);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.register-card h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.register-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+

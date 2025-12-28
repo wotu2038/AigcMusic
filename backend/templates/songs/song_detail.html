@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ song.title }} - AigcMusic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+        
+        .song-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .song-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .song-info {
+            flex: 1;
+        }
+        
+        .song-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .song-artist {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .song-meta {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .cover-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .player-section {
+            margin-top: 30px;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .play-pause-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .play-pause-btn:hover {
+            background: #5568d3;
+        }
+        
+        .time-info {
+            font-size: 14px;
+            color: #666;
+            min-width: 100px;
+        }
+        
+        .progress-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 3px;
+            width: 0%;
+        }
+        
+        .volume-control, .menu-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .comments-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .comments-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .comment-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 10px;
+        }
+        
+        .comment-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .submit-btn {
+            padding: 12px 24px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .submit-btn:hover {
+            background: #c82333;
+        }
+        
+        .comments-count {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .comment-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comment-user {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .comment-content {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .action-btn:hover {
+            background: #c82333;
+        }
+        
+        .replies-count {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ song.title }}</h1>
+        <a href="{% url 'web:song_list' %}" class="back-link">返回歌曲库</a>
+    </div>
+    
+    <div class="container">
+        <div class="song-card">
+            <div class="song-header">
+                <div class="song-info">
+                    <h2 class="song-title">{{ song.title }}</h2>
+                    <p class="song-artist">{{ song.artist }}</p>
+                    <p class="song-meta">专辑: {{ song.album|default:"-" }} | 时长: {{ song.format_duration }}</p>
+                </div>
+                {% if song.cover_url %}
+                <img src="{{ song.cover_url }}" alt="{{ song.title }}" class="cover-image" 
+                     onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="cover-image" style="background: #e0e0e0; display: none; align-items: center; justify-content: center; color: #999; font-size: 24px;">无封面</div>
+                {% else %}
+                <div class="cover-image" style="background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999;">无封面</div>
+                {% endif %}
+            </div>
+            
+            <div class="player-section">
+                <div class="player-controls">
+                    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()">⏸</button>
+                    <span class="time-info" id="timeInfo">0:00 / {{ song.format_duration }}</span>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seek(event)">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <button class="volume-control">🔊</button>
+                    <button class="menu-btn">⋯</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comments-section">
+            <h3 class="comments-title">评论区</h3>
+            
+            <div class="comment-form">
+                <textarea class="comment-input" id="commentInput" placeholder="写下你的评论..."></textarea>
+                <button class="submit-btn" onclick="submitComment()">发表评论</button>
+            </div>
+            
+            <p class="comments-count">共{{ comments_count }}条评论</p>
+            
+            <div id="commentsList">
+                {% for comment in comments %}
+                <div class="comment-item" data-comment-id="{{ comment.comment_id }}">
+                    <div class="comment-header">
+                        <div class="comment-avatar">{{ comment.user.nickname|first|default:"U" }}</div>
+                        <div>
+                            <span class="comment-user">{{ comment.user.nickname|default:comment.user.phone }}</span>
+                            <span class="comment-time">{{ comment.created_at|date:"Y年m月d日, g:i a" }}</span>
+                        </div>
+                    </div>
+                    <div class="comment-content">{{ comment.content }}</div>
+                    <div class="comment-actions">
+                        <button class="action-btn" onclick="likeComment({{ comment.comment_id }})">
+                            👍 <span id="like-{{ comment.comment_id }}">{{ comment.like_count }}</span>
+                        </button>
+                        <button class="action-btn" onclick="replyComment({{ comment.comment_id }})">💬 回复</button>
+                        {% if user.is_authenticated %}
+                            {% if user.user_id == comment.user.user_id or user.is_staff %}
+                            <button class="action-btn" onclick="deleteComment({{ comment.comment_id }})">删除</button>
+                            {% endif %}
+                        {% endif %}
+                        <span class="replies-count">共{{ comment.replies_count|default:0 }}条回复</span>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="text-align: center; color: #999; padding: 40px;">暂无评论</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <audio id="audioPlayer" src="{{ song.file_url }}"></audio>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const timeInfo = document.getElementById('timeInfo');
+        const progressFill = document.getElementById('progressFill');
+        const songId = {{ song.song_id }};
+        const songDuration = {{ song.duration }};
+        
+        // 播放/暂停
+        function togglePlay() {
+            if (!audio.src || audio.src === window.location.href) {
+                alert('该歌曲没有音频文件，请先在后台管理上传音频文件');
+                return;
+            }
+            
+            if (audio.paused) {
+                audio.play().catch(function(error) {
+                    console.error('播放失败:', error);
+                    alert('播放失败: ' + error.message);
+                });
+                playPauseBtn.textContent = '⏸';
+                recordPlayHistory();
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = '▶';
+            }
+        }
+        
+        // 播放错误处理
+        audio.addEventListener('error', function(e) {
+            console.error('播放错误:', e);
+            alert('播放失败，请检查音频文件URL是否正确');
+            playPauseBtn.textContent = '▶';
+        });
+        
+        // 更新进度
+        audio.addEventListener('timeupdate', function() {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = progress + '%';
+            
+            const current = formatTime(audio.currentTime);
+            const total = formatTime(audio.duration);
+            timeInfo.textContent = `${current} / ${total}`;
+        });
+        
+        // 点击进度条跳转
+        function seek(event) {
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.offsetWidth;
+            const percentage = clickX / width;
+            audio.currentTime = audio.duration * percentage;
+        }
+        
+        // 格式化时间
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // 记录播放历史
+        function recordPlayHistory() {
+            fetch(`/api/songs/${songId}/play/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    play_duration: songDuration,
+                    play_position: Math.floor(audio.currentTime)
+                })
+            }).catch(err => console.error('记录播放历史失败:', err));
+        }
+        
+        // 发表评论
+        function submitComment() {
+            const content = document.getElementById('commentInput').value.trim();
+            if (!content) {
+                alert('请输入评论内容');
+                return;
+            }
+            
+            fetch(`/api/songs/${songId}/comments/create/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'include',
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => {
+                // 检查响应状态
+                if (response.status === 401) {
+                    alert('请先登录后再发表评论');
+                    window.location.href = '/user/login/?next=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data) return; // 如果已经跳转到登录页，直接返回
+                
+                if (data.success) {
+                    document.getElementById('commentInput').value = '';
+                    location.reload();
+                } else {
+                    const errorMsg = data.message || (data.errors ? JSON.stringify(data.errors) : '未知错误');
+                    alert('发表评论失败: ' + errorMsg);
+                    console.error('评论失败详情:', data);
+                }
+            })
+            .catch(err => {
+                console.error('发表评论失败:', err);
+                alert('发表评论失败: ' + err.message);
+            });
+        }
+        
+        // 点赞评论
+        function likeComment(commentId) {
+            fetch(`/api/comments/${commentId}/like/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('like-' + commentId).textContent = data.data.like_count;
+                }
+            })
+            .catch(err => console.error('点赞失败:', err));
+        }
+        
+        // 回复评论
+        function replyComment(commentId) {
+            // TODO: 实现回复功能
+            alert('回复功能待实现');
+        }
+        
+        // 删除评论
+        function deleteComment(commentId) {
+            if (!confirm('确定要删除这条评论吗？')) {
+                return;
+            }
+            
+            fetch(`/api/comments/${commentId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelector(`[data-comment-id="${commentId}"]`).remove();
+                } else {
+                    alert('删除失败: ' + (data.message || '未知错误'));
+                }
+            })
+            .catch(err => {
+                console.error('删除评论失败:', err);
+                alert('删除评论失败');
+            });
+        }
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,122 @@
+/* 详情页 - 使用统一的容器系统，独立居中 */
+.song-detail-container {
+    width: 100%;
+    max-width: var(--container-max-width-medium);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--container-padding-sm);
+}
+
+/* 响应式padding */
+@media (min-width: 768px) {
+    .song-detail-container {
+        padding: var(--spacing-xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .song-detail-container {
+        padding: var(--spacing-xl) var(--container-padding-lg);
+    }
+}
+
+/* 歌曲详情卡片 */
+.song-detail-card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.song-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.song-header h2 {
+    color: #333;
+    font-size: 28px;
+    margin: 0;
+    flex: 1;
+}
+
+.back-button {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid #667eea;
+    border-radius: 6px;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.back-button:hover {
+    background: #667eea;
+    color: white;
+}
+
+.song-cover {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.song-cover img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.song-meta-info {
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.song-meta-info span {
+    margin: 0 8px;
+}
+
+.song-player-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+/* 详情页播放器样式优化 */
+.song-detail-card .audio-player {
+    padding: 20px 0;
+}
+
+.error-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .song-detail-card {
+        padding: 24px;
+    }
+    
+    .song-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .song-header h2 {
+        font-size: 24px;
+    }
+    
+    .song-cover img {
+        width: 200px;
+        height: 200px;
+    }
+}

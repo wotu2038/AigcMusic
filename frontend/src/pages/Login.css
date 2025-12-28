@@ -1,0 +1,58 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+    padding: var(--spacing-3xl) var(--container-padding-sm);
+}
+
+/* 响应式padding */
+@media (min-width: 768px) {
+    .login-container {
+        padding: var(--spacing-3xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-container {
+        padding: var(--spacing-3xl) var(--container-padding-lg);
+    }
+}
+
+.login-card {
+    width: 100%;
+    max-width: var(--container-max-width-narrow);
+    background: white;
+    border-radius: 12px;
+    padding: var(--spacing-3xl);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.login-card h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.login-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.login-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+

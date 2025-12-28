@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}用户登录 - AigcMusic{% endblock %}
+
+{% block content %}
+<div class="logo">
+    <h1>🎵 AigcMusic</h1>
+    <p style="color: #666; margin-top: 10px;">欢迎回来</p>
+</div>
+
+<form method="post" action="{% url 'web:login_view' %}">
+    {% csrf_token %}
+    
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
+    
+    <div class="form-group">
+        <label for="phone">手机号</label>
+        <input type="tel" id="phone" name="phone" placeholder="请输入手机号" required autofocus>
+    </div>
+    
+    <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" placeholder="请输入密码" required>
+    </div>
+    
+    <button type="submit" class="btn" id="loginBtn">登录</button>
+</form>
+
+{% block extra_js %}
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const btn = document.getElementById('loginBtn');
+    const form = this;
+    
+    // 禁用按钮，防止重复提交
+    btn.disabled = true;
+    btn.textContent = '登录中...';
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'not-allowed';
+    
+    // 如果表单验证失败，重新启用按钮
+    setTimeout(function() {
+        if (!form.checkValidity()) {
+            btn.disabled = false;
+            btn.textContent = '登录';
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        }
+    }, 100);
+});
+</script>
+{% endblock %}
+
+<div class="link">
+    <p>还没有账户？<a href="{% url 'web:register_view' %}">立即注册</a></p>
+</div>
+{% endblock %}
+

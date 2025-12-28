@@ -1,0 +1,175 @@
+/* 统一音频播放器样式 */
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    width: 100%;
+}
+
+/* 内联模式（列表页） */
+.audio-player-inline {
+    min-width: 400px;
+    gap: 6px;
+}
+
+/* 详情页模式 */
+.audio-player-detail {
+    gap: 10px;
+}
+
+.audio-player-play-btn {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 32px;
+    transition: background 0.3s;
+    flex-shrink: 0;
+}
+
+.audio-player-play-btn:hover {
+    background: #555;
+}
+
+.audio-player-progress-container {
+    flex: 1;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    min-width: 120px;
+}
+
+.audio-player-progress-bar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.audio-player-progress-fill {
+    height: 100%;
+    background: #667eea;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.audio-player-time {
+    font-size: 12px;
+    color: #666;
+    min-width: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.audio-player-volume {
+    width: 60px;
+    height: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.audio-player-menu-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.audio-player-menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+    padding: 4px 8px;
+    line-height: 1;
+    transition: color 0.3s;
+}
+
+.audio-player-menu-btn:hover {
+    color: #333;
+}
+
+.audio-player-menu-dropdown {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    min-width: 120px;
+    margin-top: 4px;
+}
+
+.audio-player-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.audio-player-menu-item:hover {
+    background: #f5f5f5;
+}
+
+.audio-player-menu-item.active {
+    background: #e7f3ff;
+    color: #667eea;
+    font-weight: 500;
+}
+
+.audio-player-menu-item span {
+    font-size: 16px;
+}
+
+.audio-player-menu-item-container {
+    position: relative;
+}
+
+.audio-player-speed-menu {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+    min-width: 80px;
+    margin-left: 4px;
+}
+
+.audio-player-speed-menu button {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.audio-player-speed-menu button:hover {
+    background: #f5f5f5;
+}
+
+.audio-player-speed-menu button.active {
+    background: #e7f3ff;
+    color: #667eea;
+    font-weight: 500;
+}
+

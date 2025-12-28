@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}个人资料 - AigcMusic{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    <h2>个人资料</h2>
+    <p style="color: #666;">欢迎，{{ user.nickname|default:user.phone }}</p>
+</div>
+
+<div class="profile-info">
+    <div class="profile-info-item">
+        <span class="profile-info-label">手机号：</span>
+        <span class="profile-info-value">{{ user.phone }}</span>
+    </div>
+    
+    <div class="profile-info-item">
+        <span class="profile-info-label">昵称：</span>
+        <span class="profile-info-value">{{ user.nickname|default:"未设置" }}</span>
+    </div>
+    
+    <div class="profile-info-item">
+        <span class="profile-info-label">VIP状态：</span>
+        <span class="profile-info-value">
+            {% if user.is_vip %}
+                {% if user.is_vip_valid %}
+                    ✅ {{ user.get_vip_type_display|default:"VIP" }}
+                {% else %}
+                    ⚠️ 已过期
+                {% endif %}
+            {% else %}
+                普通用户
+            {% endif %}
+        </span>
+    </div>
+    
+    <div class="profile-info-item">
+        <span class="profile-info-label">金币余额：</span>
+        <span class="profile-info-value">{{ user.coin_balance }}</span>
+    </div>
+    
+    <div class="profile-info-item">
+        <span class="profile-info-label">注册时间：</span>
+        <span class="profile-info-value">{{ user.date_joined|date:"Y-m-d H:i" }}</span>
+    </div>
+</div>
+
+<div class="actions">
+    <a href="{% url 'web:change_password_view' %}" class="btn btn-secondary">修改密码</a>
+    <a href="{% url 'web:logout_view' %}" class="btn">退出登录</a>
+</div>
+{% endblock %}
+

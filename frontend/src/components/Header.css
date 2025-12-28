@@ -1,0 +1,79 @@
+/* Header - 全宽，内容居中 */
+.header {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+}
+
+/* Header内容 - 使用统一的容器系统，与列表页对齐 */
+.header-content {
+    width: 100%;
+    max-width: var(--container-max-width-wide);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--container-padding-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 响应式padding - 与列表页保持一致 */
+@media (min-width: 768px) {
+    .header-content {
+        padding: var(--spacing-xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .header-content {
+        padding: var(--spacing-xl) var(--container-padding-lg);
+    }
+}
+
+.header-logo {
+    text-decoration: none;
+    color: #333;
+}
+
+.header-logo h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-user {
+    color: #333;
+    font-weight: 500;
+}
+
+.header-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.header-link:hover {
+    color: #5a67d8;
+    text-decoration: underline;
+}
+
+.header-logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+}
+
+.header-logout:hover {
+    color: #dc3545;
+}

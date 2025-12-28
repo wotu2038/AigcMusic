@@ -1,0 +1,152 @@
+.player-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 在详情页卡片中，Player不需要背景 */
+.song-detail-card .player-container {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.player-song-info {
+    flex: 1;
+}
+
+.player-title {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.player-artist {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.player-play-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.player-play-btn:hover {
+    background: #5a67d8;
+}
+
+.player-progress-container {
+    flex: 1;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.player-progress-bar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.player-progress-fill {
+    height: 100%;
+    background: #667eea;
+    border-radius: 4px;
+    transition: width 0.1s;
+}
+
+.player-time {
+    color: #666;
+    font-size: 14px;
+    min-width: 100px;
+    text-align: right;
+}
+
+.player-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-volume-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.player-volume-btn:hover {
+    background: #e0e0e0;
+}
+
+.player-volume-slider {
+    width: 100px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #e0e0e0;
+    border-radius: 2px;
+    outline: none;
+}
+
+.player-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.player-volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.player-btn {
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    background: transparent;
+}
+

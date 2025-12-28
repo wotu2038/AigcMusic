@@ -1,0 +1,251 @@
+/* 宝箱容器 */
+.treasure-chest {
+    position: fixed;
+    right: -150px; /* 从屏幕右侧外开始 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 120px;
+    height: 100px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.treasure-chest:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.treasure-chest.animating {
+    animation: floatAcross 15s linear infinite;
+}
+
+/* 飘动动画 */
+@keyframes floatAcross {
+    0% {
+        right: -150px;
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        right: calc(100vw + 150px);
+        opacity: 0;
+    }
+}
+
+/* 宝箱主体 */
+.chest-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+}
+
+/* 宝箱盖子 */
+.chest-lid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    transform-origin: bottom;
+    transition: transform 0.5s ease;
+}
+
+.treasure-chest:hover .chest-lid {
+    transform: rotateX(-15deg);
+}
+
+.chest-lid-top {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+    border-radius: 8px 8px 0 0;
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.chest-lid-top::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    border-radius: 50%;
+}
+
+.chest-lid-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(135deg, #b8941f 0%, #d4af37 100%);
+    transform: rotateX(90deg);
+    transform-origin: bottom;
+}
+
+/* 宝箱底座 */
+.chest-base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(135deg, #c9a227 0%, #d4af37 50%, #c9a227 100%);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 锁 */
+.chest-lock {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.lock-circle {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #8b6914 0%, #5a4510 100%);
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 装饰线条 */
+.chest-decoration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 2px;
+}
+
+.decoration-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(139, 105, 20, 0.6) 20%, 
+        rgba(139, 105, 20, 0.8) 50%, 
+        rgba(139, 105, 20, 0.6) 80%, 
+        transparent 100%);
+    margin: 8px 0;
+}
+
+/* 光晕效果 */
+.chest-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, 
+        rgba(212, 175, 55, 0.3) 0%, 
+        rgba(212, 175, 55, 0.1) 50%, 
+        transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: glowPulse 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* 宝箱标签 */
+.chest-label {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #d4af37;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 不同类型宝箱的颜色变体 */
+.treasure-chest.image-chest .chest-lid-top,
+.treasure-chest.image-chest .chest-base {
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+}
+
+.treasure-chest.text-chest .chest-lid-top,
+.treasure-chest.text-chest .chest-base {
+    background: linear-gradient(135deg, #9b59b6 0%, #bb8fce 50%, #9b59b6 100%);
+}
+
+.treasure-chest.text-chest .chest-glow {
+    background: radial-gradient(circle, 
+        rgba(155, 89, 182, 0.3) 0%, 
+        rgba(155, 89, 182, 0.1) 50%, 
+        transparent 100%);
+}
+
+.treasure-chest.text-chest .chest-label {
+    color: #bb8fce;
+}
+
+.treasure-chest.video-chest .chest-lid-top,
+.treasure-chest.video-chest .chest-base {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #e74c3c 100%);
+}
+
+.treasure-chest.video-chest .chest-glow {
+    background: radial-gradient(circle, 
+        rgba(231, 76, 60, 0.3) 0%, 
+        rgba(231, 76, 60, 0.1) 50%, 
+        transparent 100%);
+}
+
+.treasure-chest.video-chest .chest-label {
+    color: #ec7063;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .treasure-chest {
+        width: 100px;
+        height: 80px;
+    }
+
+    .chest-label {
+        font-size: 11px;
+        bottom: -25px;
+    }
+}
+

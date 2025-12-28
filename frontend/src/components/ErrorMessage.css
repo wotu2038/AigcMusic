@@ -1,0 +1,40 @@
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    color: #c33;
+    margin-bottom: 16px;
+}
+
+.error-icon {
+    font-size: 18px;
+}
+
+.error-text {
+    flex: 1;
+    font-size: 14px;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: #c33;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-close:hover {
+    background-color: rgba(204, 51, 51, 0.1);
+    border-radius: 4px;
+}
+

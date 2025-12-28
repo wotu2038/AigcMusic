@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌曲库 - AigcMusic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+        
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .search-btn {
+            padding: 12px 24px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .search-btn:hover {
+            background: #c82333;
+        }
+        
+        .songs-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f8f9fa;
+        }
+        
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .song-title {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .song-title.playing {
+            color: #dc3545;
+        }
+        
+        .cover-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .player-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .play-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .play-btn:hover {
+            background: #5568d3;
+        }
+        
+        .time-display {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .pagination a {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .pagination a:hover {
+            background: #f8f9fa;
+        }
+        
+        .pagination .current {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>歌曲库</h1>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <a href="{% url 'web:profile_view' %}" style="text-decoration: none; color: #333; margin-right: 10px;">
+                    {{ user.nickname|default:user.phone }}
+                </a>
+                <div class="user-avatar">{{ user.nickname|first|default:"U" }}</div>
+                <a href="{% url 'web:logout_view' %}" style="margin-left: 15px; color: #666; text-decoration: none;">退出</a>
+            {% else %}
+                <a href="{% url 'web:login_view' %}" style="margin-right: 15px; color: #667eea; text-decoration: none;">登录</a>
+                <a href="{% url 'web:register_view' %}" style="color: #667eea; text-decoration: none;">注册</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="search-section">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索歌曲/歌手/专辑" value="{{ keyword }}">
+            <button class="search-btn" onclick="searchSongs()">搜索</button>
+        </div>
+        
+        <div class="songs-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>歌名</th>
+                        <th>歌手</th>
+                        <th>专辑</th>
+                        <th>时长</th>
+                        <th>封面</th>
+                        <th>播放</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in songs %}
+                    <tr data-song-id="{{ song.song_id }}">
+                        <td>{{ song.song_id }}</td>
+                        <td class="song-title" id="title-{{ song.song_id }}">
+                            <a href="{% url 'web:song_detail' song.song_id %}" style="text-decoration: none; color: inherit;">
+                                {{ song.title }}
+                            </a>
+                        </td>
+                        <td>{{ song.artist }}</td>
+                        <td>{{ song.album|default:"-" }}</td>
+                        <td>{{ song.format_duration }}</td>
+                        <td>
+                            {% if song.cover_url %}
+                            <img src="{{ song.cover_url }}" alt="{{ song.title }}" class="cover-img" 
+                                 onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="cover-img" style="background: #e0e0e0; display: none; align-items: center; justify-content: center; color: #999;">无</div>
+                            {% else %}
+                            <div class="cover-img" style="background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999;">无</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="player-control" id="player-{{ song.song_id }}">
+                                <button class="play-btn" onclick="playSong({{ song.song_id }}, '{{ song.file_url }}', '{{ song.title }}')">▶</button>
+                                <span class="time-display">0:00 / {{ song.format_duration }}</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>🔊</span>
+                                <span>⋯</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">暂无歌曲</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if songs.has_other_pages %}
+        <div class="pagination">
+            {% if songs.has_previous %}
+            <a href="?page={{ songs.previous_page_number }}{% if keyword %}&keyword={{ keyword }}{% endif %}">上一页</a>
+            {% endif %}
+            
+            <span class="current">{{ songs.number }} / {{ songs.paginator.num_pages }}</span>
+            
+            {% if songs.has_next %}
+            <a href="?page={{ songs.next_page_number }}{% if keyword %}&keyword={{ keyword }}{% endif %}">下一页</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    
+    <script>
+        let currentAudio = null;
+        let currentSongId = null;
+        
+        function searchSongs() {
+            const keyword = document.getElementById('searchInput').value;
+            window.location.href = '{% url "web:song_list" %}?keyword=' + encodeURIComponent(keyword);
+        }
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchSongs();
+            }
+        });
+        
+        function playSong(songId, fileUrl, title) {
+            // 检查文件URL
+            if (!fileUrl || fileUrl.trim() === '') {
+                alert('该歌曲没有音频文件，请先在后台管理上传音频文件');
+                return;
+            }
+            
+            // 停止当前播放
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            // 移除之前的播放状态
+            if (currentSongId) {
+                const prevTitle = document.getElementById('title-' + currentSongId);
+                if (prevTitle) {
+                    prevTitle.classList.remove('playing');
+                }
+            }
+            
+            // 创建新的音频对象
+            currentAudio = new Audio(fileUrl);
+            currentSongId = songId;
+            
+            // 高亮当前播放歌曲
+            const titleEl = document.getElementById('title-' + songId);
+            if (titleEl) {
+                titleEl.classList.add('playing');
+            }
+            
+            // 播放错误处理
+            currentAudio.addEventListener('error', function(e) {
+                console.error('播放错误:', e);
+                alert('播放失败，请检查音频文件URL是否正确');
+                resetPlayer(songId);
+            });
+            
+            // 播放
+            currentAudio.play().catch(function(error) {
+                console.error('播放失败:', error);
+                alert('播放失败: ' + error.message);
+                resetPlayer(songId);
+            });
+            
+            // 更新播放按钮
+            const playBtn = document.querySelector(`#player-${songId} .play-btn`);
+            if (playBtn) {
+                playBtn.textContent = '⏸';
+                playBtn.onclick = function() { pauseSong(songId); };
+            }
+            
+            // 更新进度条
+            currentAudio.addEventListener('timeupdate', function() {
+                updateProgress(songId);
+            });
+            
+            // 播放结束
+            currentAudio.addEventListener('ended', function() {
+                resetPlayer(songId);
+            });
+            
+            // 记录播放历史
+            recordPlayHistory(songId);
+        }
+        
+        function pauseSong(songId) {
+            if (currentAudio && currentSongId === songId) {
+                currentAudio.pause();
+                const playBtn = document.querySelector(`#player-${songId} .play-btn`);
+                if (playBtn) {
+                    playBtn.textContent = '▶';
+                    playBtn.onclick = function() { playSong(songId, currentAudio.src, ''); };
+                }
+            }
+        }
+        
+        function updateProgress(songId) {
+            if (currentAudio && currentSongId === songId) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                const progressFill = document.querySelector(`#player-${songId} .progress-fill`);
+                const timeDisplay = document.querySelector(`#player-${songId} .time-display`);
+                
+                if (progressFill) {
+                    progressFill.style.width = progress + '%';
+                }
+                
+                if (timeDisplay) {
+                    const current = formatTime(currentAudio.currentTime);
+                    const total = formatTime(currentAudio.duration);
+                    timeDisplay.textContent = `${current} / ${total}`;
+                }
+            }
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function resetPlayer(songId) {
+            const playBtn = document.querySelector(`#player-${songId} .play-btn`);
+            const progressFill = document.querySelector(`#player-${songId} .progress-fill`);
+            const timeDisplay = document.querySelector(`#player-${songId} .time-display`);
+            
+            if (playBtn) {
+                playBtn.textContent = '▶';
+            }
+            if (progressFill) {
+                progressFill.style.width = '0%';
+            }
+            if (timeDisplay) {
+                timeDisplay.textContent = '0:00 / 0:00';
+            }
+            
+            const titleEl = document.getElementById('title-' + songId);
+            if (titleEl) {
+                titleEl.classList.remove('playing');
+            }
+            
+            currentAudio = null;
+            currentSongId = null;
+        }
+        
+        function recordPlayHistory(songId) {
+            fetch(`/api/songs/${songId}/play/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    play_duration: currentAudio ? Math.floor(currentAudio.duration) : null,
+                    play_position: currentAudio ? Math.floor(currentAudio.currentTime) : null
+                })
+            }).catch(err => console.error('记录播放历史失败:', err));
+        }
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
+

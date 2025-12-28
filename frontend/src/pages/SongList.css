@@ -1,0 +1,144 @@
+/* 列表页 - 使用统一的容器系统，与Header对齐 */
+.song-list-container {
+    width: 100%;
+    max-width: var(--container-max-width-wide);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--container-padding-sm);
+}
+
+/* 响应式padding */
+@media (min-width: 768px) {
+    .song-list-container {
+        padding: var(--spacing-xl) var(--container-padding-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .song-list-container {
+        padding: var(--spacing-xl) var(--container-padding-lg);
+    }
+}
+
+.song-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.song-list-header h2 {
+    color: #333;
+    font-size: 28px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    min-width: 250px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.song-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.song-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 1200px;
+}
+
+.song-table thead {
+    background: #f8f9fa;
+}
+
+.song-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #333 !important;
+    background-color: #f8f9fa !important;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.song-table th:nth-child(1) { width: 4%; }  /* ID */
+.song-table th:nth-child(2) { width: 15%; } /* 歌名 */
+.song-table th:nth-child(3) { width: 12%; } /* 歌手 */
+.song-table th:nth-child(4) { width: 12%; } /* 专辑 */
+.song-table th:nth-child(5) { width: 8%; }  /* 时长 */
+.song-table th:nth-child(6) { width: 8%; }  /* 封面 */
+.song-table th:nth-child(7) { width: 41%; } /* 播放 */
+
+.song-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #333 !important;
+    background-color: white !important;
+}
+
+.song-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.song-table tbody tr.playing-row {
+    background: #e7f3ff;
+}
+
+.song-cover-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.song-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.song-link:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.pagination-info {
+    color: #666;
+    font-weight: 500;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
