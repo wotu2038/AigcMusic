@@ -10,6 +10,13 @@ ALLOWED_HOSTS = config(
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
 
+# CSRF信任的来源（通过nginx代理时需要配置）
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='',
+    cast=lambda v: [s.strip() for s in v.split(',')] if v else []
+)
+
 # 安全设置
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
