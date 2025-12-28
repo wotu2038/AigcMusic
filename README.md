@@ -418,6 +418,111 @@ curl http://your-production-ip:8025/api/songs/
 - **REST API**: http://your-production-ip:8025/api/
 - **API文档**: http://your-production-ip:8025/api/docs/
 
+---
+
+### 更新代码（Git Pull）
+
+当GitHub上有新代码时，在ECS服务器上更新：
+
+#### 方法一：拉取最新代码并重启服务（推荐）
+
+```bash
+# 1. 进入项目目录
+cd /opt/aigcmusic
+
+# 2. 拉取最新代码
+git pull origin main
+
+# 3. 如果有Dockerfile变更，需要重新构建
+docker-compose build
+
+# 4. 重启服务（零停机时间，滚动更新）
+docker-compose --profile production up -d --build
+
+# 5. 如果有数据库迁移，执行迁移
+docker-compose exec web python manage.py migrate
+
+# 6. 如果有静态文件变更，收集静态文件
+docker-compose exec web python manage.py collectstatic --noinput
+
+# 7. 验证服务
+docker-compose ps
+docker-compose logs -f web
+```
+
+#### 方法二：仅拉取代码（不重启服务）
+
+```bash
+# 1. 进入项目目录
+cd /opt/aigcmusic
+
+# 2. 拉取最新代码
+git pull origin main
+
+# 注意：如果只是代码变更（非配置变更），Docker volume挂载会自动更新
+# 但需要重启服务才能生效：
+docker-compose restart web celery celery-beat
+```
+
+#### 方法三：完整更新流程（包含前端构建）
+
+```bash
+# 1. 进入项目目录
+cd /opt/aigcmusic
+
+# 2. 拉取最新代码
+git pull origin main
+
+# 3. 重新构建所有服务（包括前端）
+docker-compose build
+
+# 4. 停止旧服务
+docker-compose --profile production down
+
+# 5. 启动新服务
+docker-compose --profile production up -d
+
+# 6. 执行数据库迁移（如果有）
+docker-compose exec web python manage.py migrate
+
+# 7. 收集静态文件
+docker-compose exec web python manage.py collectstatic --noinput
+
+# 8. 验证服务
+docker-compose ps
+```
+
+#### 更新时的注意事项
+
+1. **备份数据**（重要）：
+   ```bash
+   # 备份数据库（如果使用本地数据库）
+   docker-compose exec web python manage.py dumpdata > backup_$(date +%Y%m%d).json
+   ```
+
+2. **检查变更**：
+   ```bash
+   # 查看Git变更
+   git log --oneline -5
+   git diff HEAD~1
+   ```
+
+3. **测试环境验证**：
+   - 建议先在测试环境验证更新
+   - 确认无误后再在生产环境更新
+
+4. **回滚方法**：
+   ```bash
+   # 如果更新后出现问题，可以回滚到上一个版本
+   git log --oneline  # 查看提交历史
+   git checkout <previous-commit-hash>  # 回滚到指定提交
+   docker-compose --profile production up -d --build
+   ```
+
+---
+
+### 常用运维命令
+
 ### 生产环境常用命令
 
 ```bash
