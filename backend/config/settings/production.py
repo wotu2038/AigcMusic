@@ -17,10 +17,14 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=lambda v: [s.strip() for s in v.split(',')] if v else []
 )
 
-# 安全设置
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# 安全设置（HTTP环境）
+# 注意：如果使用HTTP，需要将以下设置为False
+# 如果后续配置HTTPS，请将这些设置改为True
+SECURE_SSL_REDIRECT = False  # HTTP时不强制HTTPS重定向
+SESSION_COOKIE_SECURE = False  # HTTP时设为False，HTTPS时设为True
+CSRF_COOKIE_SECURE = False  # HTTP时设为False，HTTPS时设为True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
