@@ -4,6 +4,7 @@ import api from '../services/api';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import AudioPlayer from '../components/AudioPlayer';
+import LyricsPlayer from '../components/LyricsPlayer';
 import CommentList from '../components/CommentList';
 import AIGCContent from '../components/AIGCContent';
 import './SongDetail.css';
@@ -55,19 +56,30 @@ function SongDetail() {
                     <Link to="/" className="back-button">返回歌曲库</Link>
                 </div>
                 
-                {song.cover_url && (
-                    <div className="song-cover">
-                        <img src={song.cover_url} alt={song.title} />
+                {/* 主要内容区域：左右分栏 */}
+                <div className="song-main-content">
+                    {/* 左侧：封面、信息 */}
+                    <div className="song-left-section">
+                        {song.cover_url && (
+                            <div className="song-cover">
+                                <img src={song.cover_url} alt={song.title} />
+                            </div>
+                        )}
+                        
+                        <div className="song-meta-info">
+                            {song.album && <span>专辑: {song.album}</span>}
+                            <span>|</span>
+                            <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
+                        </div>
                     </div>
-                )}
-                
-                <div className="song-meta-info">
-                    {song.album && <span>专辑: {song.album}</span>}
-                    <span>|</span>
-                    <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
+                    
+                    {/* 右侧：歌词播放器 */}
+                    <div className="song-right-section">
+                        <LyricsPlayer song={song} lyrics={song.lyrics || ''} />
+                    </div>
                 </div>
                 
-                {/* 音乐播放器 */}
+                {/* 播放器：占据整个宽度 */}
                 <div className="song-player-section">
                     <AudioPlayer song={song} variant="detail" />
                 </div>
