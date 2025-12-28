@@ -17,6 +17,11 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=lambda v: [s.strip() for s in v.split(',')] if v else []
 )
 
+# CSRF Cookie设置（通过nginx代理时）
+CSRF_COOKIE_SECURE = False  # HTTP时设为False，HTTPS时设为True
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
+
 # 开发环境允许所有CORS
 CORS_ALLOW_ALL_ORIGINS = True
 
