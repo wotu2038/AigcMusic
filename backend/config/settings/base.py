@@ -121,6 +121,11 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# 文件上传大小限制（支持MV视频最大500MB）
+FILE_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 500MB（字节）
+DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 500MB（字节）
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240  # 增加字段数量限制
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
