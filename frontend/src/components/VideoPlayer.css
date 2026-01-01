@@ -1,0 +1,332 @@
+/* MV视频播放器弹窗 */
+.video-player-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.video-player-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.video-player-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.video-player-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.video-player-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.video-player-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.video-player-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 比例 */
+    background: #000;
+}
+
+.video-player-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* 控制栏 */
+.video-player-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.video-player-controls.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 进度条 */
+.video-player-progress-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.video-player-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+.video-player-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+.video-player-progress-handle {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.video-player-progress-container:hover .video-player-progress-handle {
+    opacity: 1;
+}
+
+/* 控制按钮区域 */
+.video-player-controls-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.video-player-controls-left,
+.video-player-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.video-player-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+}
+
+.video-player-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.video-player-time {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 100px;
+    text-align: center;
+}
+
+/* 音量控制 */
+.video-player-volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.video-player-volume-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.video-player-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.video-player-volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.video-player-volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s ease;
+}
+
+.video-player-volume-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* 设置菜单 */
+.video-player-settings {
+    position: relative;
+}
+
+.video-player-settings-menu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 16px;
+    min-width: 200px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.video-player-settings-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.video-player-settings-item span {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.video-player-speed-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.video-player-speed-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.video-player-speed-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.video-player-speed-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-color: transparent;
+    font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .video-player-container {
+        width: 95%;
+    }
+
+    .video-player-header h3 {
+        font-size: 16px;
+    }
+
+    .video-player-controls-bottom {
+        flex-wrap: wrap;
+    }
+
+    .video-player-time {
+        min-width: 80px;
+        font-size: 12px;
+    }
+
+    .video-player-volume-control {
+        display: none; /* 移动端隐藏音量滑块 */
+    }
+}
+

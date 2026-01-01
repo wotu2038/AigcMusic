@@ -22,8 +22,8 @@ class SongAdmin(admin.ModelAdmin):
             'fields': ('song_id', 'title', 'artist', 'album', 'duration', 'genre')
         }),
         ('文件信息', {
-            'fields': ('audio_file', 'cover_image', 'file_size', 'bitrate', 'sample_rate', 'file_url', 'cover_url'),
-            'description': '音频文件支持MP3格式，将自动上传到阿里云OSS'
+            'fields': ('audio_file', 'cover_image', 'mv_video_file', 'file_size', 'bitrate', 'sample_rate', 'file_url', 'cover_url'),
+            'description': '音频文件支持MP3格式，MV视频文件支持MP4格式（建议720p或1080p，不超过500MB），将自动上传到阿里云OSS'
         }),
         ('歌词信息', {
             'fields': ('lyrics_file', 'lyrics'),

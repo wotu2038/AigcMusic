@@ -4,7 +4,7 @@
 from django.db import models
 from django.utils import timezone
 from apps.users.models import User
-from utils.storage.oss_storage import audio_storage, image_storage, file_storage
+from utils.storage.oss_storage import audio_storage, image_storage, file_storage, video_storage
 
 
 # 音乐类型选择
@@ -44,6 +44,14 @@ class Song(models.Model):
         null=True, 
         verbose_name='歌词文件',
         help_text='支持LRC或SRT格式文件，上传后会自动解析并填充到歌词字段'
+    )
+    mv_video_file = models.FileField(
+        upload_to='mv/', 
+        storage=video_storage, 
+        blank=True, 
+        null=True, 
+        verbose_name='MV视频文件',
+        help_text='支持MP4格式，建议分辨率720p或1080p，文件大小不超过500MB'
     )
     genre = models.CharField(max_length=50, choices=GENRE_CHOICES, blank=True, null=True, verbose_name='音乐类型', db_index=True)
     play_count = models.IntegerField(default=0, verbose_name='播放次数', db_index=True)
@@ -106,6 +114,21 @@ class Song(models.Model):
             try:
                 return self.audio_file.size
             except:
+                return None
+        return None
+    
+    @property
+    def mv_video_url(self):
+        """获取MV视频文件URL"""
+        if self.mv_video_file and self.mv_video_file.name:
+            try:
+                # 强制初始化bucket以确保endpoint正确
+                _ = self.mv_video_file.storage.bucket
+                return self.mv_video_file.url
+            except Exception as e:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f'获取MV视频URL失败: {self.mv_video_file.name}, 错误: {str(e)}')
                 return None
         return None
 

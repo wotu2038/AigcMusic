@@ -115,6 +115,20 @@
     margin: 0 8px;
 }
 
+/* MV视频链接 */
+.song-mv-link {
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.song-mv-link:hover {
+    color: #5a6edc;
+    text-decoration: underline;
+    text-decoration-color: #5a6edc;
+}
+
 /* 播放器部分：占据整个宽度 */
 .song-player-section {
     width: 100%;

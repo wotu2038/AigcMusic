@@ -12,6 +12,7 @@ class SongSerializer(serializers.ModelSerializer):
     file_url = serializers.SerializerMethodField()
     cover_url = serializers.SerializerMethodField()
     file_size = serializers.SerializerMethodField()
+    mv_video_url = serializers.SerializerMethodField()
     genre_display = serializers.CharField(source='get_genre_display', read_only=True)
     
     class Meta:
@@ -19,8 +20,8 @@ class SongSerializer(serializers.ModelSerializer):
         fields = (
             'song_id', 'title', 'artist', 'album', 'duration', 
             'formatted_duration', 'audio_file', 'cover_image',
-            'file_url', 'cover_url', 'lyrics', 'lyrics_file',
-            'genre', 'genre_display', 'play_count', 'like_count', 'file_size', 
+            'file_url', 'cover_url', 'lyrics', 'lyrics_file', 'mv_video_file',
+            'mv_video_url', 'genre', 'genre_display', 'play_count', 'like_count', 'file_size', 
             'bitrate', 'sample_rate', 'is_active', 'created_at', 'updated_at'
         )
         read_only_fields = ('song_id', 'play_count', 'like_count', 'created_at', 'updated_at')
@@ -40,6 +41,10 @@ class SongSerializer(serializers.ModelSerializer):
     def get_file_size(self, obj):
         """获取文件大小"""
         return obj.file_size
+    
+    def get_mv_video_url(self, obj):
+        """获取MV视频URL"""
+        return obj.mv_video_url
 
 
 class SongListSerializer(serializers.ModelSerializer):

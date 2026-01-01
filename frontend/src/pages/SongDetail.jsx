@@ -7,6 +7,7 @@ import AudioPlayer from '../components/AudioPlayer';
 import LyricsPlayer from '../components/LyricsPlayer';
 import CommentList from '../components/CommentList';
 import AIGCContent from '../components/AIGCContent';
+import VideoPlayer from '../components/VideoPlayer';
 import './SongDetail.css';
 
 function SongDetail() {
@@ -14,6 +15,7 @@ function SongDetail() {
     const [song, setSong] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [showVideoPlayer, setShowVideoPlayer] = useState(false);
     
     useEffect(() => {
         loadSong();
@@ -68,9 +70,20 @@ function SongDetail() {
                 
                 <div className="song-meta-info">
                     {song.album && <span>专辑: {song.album}</span>}
-                    <span>|</span>
+                    {song.album && <span>|</span>}
                     <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
-                        </div>
+                    {song.mv_video_url && (
+                        <>
+                            <span>|</span>
+                            <span 
+                                className="song-mv-link" 
+                                onClick={() => setShowVideoPlayer(true)}
+                            >
+                                ▶ MV视频
+                            </span>
+                        </>
+                    )}
+                </div>
                     </div>
                     
                     {/* 右侧：歌词播放器 */}
@@ -87,6 +100,16 @@ function SongDetail() {
             
             {/* AIGC内容展示 */}
             <AIGCContent songId={song.song_id} />
+            
+            {/* MV视频播放器弹窗 */}
+            {showVideoPlayer && song.mv_video_url && (
+                <VideoPlayer
+                    videoUrl={song.mv_video_url}
+                    title={song.title}
+                    artist={song.artist}
+                    onClose={() => setShowVideoPlayer(false)}
+                />
+            )}
             
             {/* 评论列表 - 居中显示 */}
             <CommentList songId={song.song_id} />
