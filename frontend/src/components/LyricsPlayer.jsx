@@ -5,10 +5,10 @@ import './LyricsPlayer.css';
 
 /**
  * 歌词播放器组件
- * 支持 LRC 格式和纯文本格式
+ * 支持 LRC、SRT 格式和纯文本格式
  * 特性：
  * - 自动检测歌词格式
- * - LRC 格式：时间轴高亮、自动滚动、点击跳转
+ * - LRC/SRT 格式：时间轴高亮、自动滚动、点击跳转
  * - 纯文本格式：简单显示
  */
 function LyricsPlayer({ song, lyrics }) {
@@ -45,8 +45,8 @@ function LyricsPlayer({ song, lyrics }) {
             return;
         }
         
-        if (parsedLyrics.type === 'lrc') {
-            // LRC 模式：根据时间标签精确匹配
+        if (parsedLyrics.type === 'lrc' || parsedLyrics.type === 'srt') {
+            // LRC/SRT 模式：根据时间标签精确匹配
             if (isPlaying) {
                 const index = findCurrentLyricIndex(parsedLyrics.lines, currentTime);
                 setCurrentIndex(index);
@@ -86,9 +86,9 @@ function LyricsPlayer({ song, lyrics }) {
         }
     }, [currentIndex]);
     
-    // 处理点击歌词行（仅 LRC 模式）
+    // 处理点击歌词行（LRC 和 SRT 模式）
     const handleLineClick = (line) => {
-        if (parsedLyrics.type === 'lrc' && line.time !== null) {
+        if ((parsedLyrics.type === 'lrc' || parsedLyrics.type === 'srt') && line.time !== null) {
             seekTo(line.time);
         }
     };
@@ -104,7 +104,7 @@ function LyricsPlayer({ song, lyrics }) {
         );
     }
     
-    const isLRC = parsedLyrics.type === 'lrc';
+    const isLRC = parsedLyrics.type === 'lrc' || parsedLyrics.type === 'srt';
     
     return (
         <div className="lyrics-player">
@@ -129,10 +129,10 @@ function LyricsPlayer({ song, lyrics }) {
                             } ${
                                 isFuture ? 'lyrics-line-future' : ''
                             } ${
-                                isLRC && line.time !== null ? 'lyrics-line-clickable' : ''
+                                (parsedLyrics.type === 'lrc' || parsedLyrics.type === 'srt') && line.time !== null ? 'lyrics-line-clickable' : ''
                             }`}
                             onClick={() => handleLineClick(line)}
-                            title={isLRC && line.time !== null ? `点击跳转到 ${formatTime(line.time)}` : ''}
+                            title={(parsedLyrics.type === 'lrc' || parsedLyrics.type === 'srt') && line.time !== null ? `点击跳转到 ${formatTime(line.time)}` : ''}
                         >
                             {line.text}
                         </div>

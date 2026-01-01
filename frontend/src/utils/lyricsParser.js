@@ -1,6 +1,6 @@
 /**
  * 歌词解析工具
- * 支持 LRC 格式和纯文本格式
+ * 支持 LRC、SRT 格式和纯文本格式
  */
 
 /**
@@ -32,6 +32,27 @@ function parseLRCTimeTag(timeTag) {
 }
 
 /**
+ * 解析 SRT 时间格式
+ * 支持格式：00:00:12,500 或 00:00:12.500
+ */
+function parseSRTTime(timeStr) {
+    // 支持逗号和点作为毫秒分隔符
+    const normalized = timeStr.replace(',', '.');
+    
+    // 匹配 HH:MM:SS.mmm 格式
+    const match = normalized.match(/^(\d{2}):(\d{2}):(\d{2})\.(\d{3})$/);
+    if (match) {
+        const hours = parseInt(match[1], 10);
+        const minutes = parseInt(match[2], 10);
+        const seconds = parseInt(match[3], 10);
+        const milliseconds = parseInt(match[4], 10);
+        return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+    }
+    
+    return null;
+}
+
+/**
  * 检测是否为 LRC 格式
  */
 function isLRCFormat(lyrics) {
@@ -40,6 +61,19 @@ function isLRCFormat(lyrics) {
     // 检测是否包含时间标签 [mm:ss.xx] 或 [mm:ss:xx] 或 [mm:ss]
     const lrcPattern = /\[\d{2}:\d{2}[\.:]?\d{0,2}\]/;
     return lrcPattern.test(lyrics);
+}
+
+/**
+ * 检测是否为 SRT 格式
+ */
+function isSRTFormat(lyrics) {
+    if (!lyrics || typeof lyrics !== 'string') return false;
+    
+    // 检测是否包含 SRT 格式特征：
+    // 1. 序号行（纯数字）
+    // 2. 时间行（HH:MM:SS,mmm --> HH:MM:SS,mmm）
+    const srtPattern = /\d+\s+\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}[,\.]\d{3}/;
+    return srtPattern.test(lyrics);
 }
 
 /**
@@ -92,6 +126,76 @@ function parseLRC(lyrics) {
 }
 
 /**
+ * 解析 SRT 格式字幕/歌词
+ * 返回格式：[{ time: number, end_time: number, text: string }, ...]
+ * 注意：为了兼容LRC格式，我们使用time作为主要时间
+ */
+function parseSRT(lyrics) {
+    if (!lyrics) return [];
+    
+    const lines = lyrics.split('\n');
+    const result = [];
+    let i = 0;
+    
+    while (i < lines.length) {
+        const line = lines[i].trim();
+        
+        // 跳过空行
+        if (!line) {
+            i++;
+            continue;
+        }
+        
+        // 检查是否是序号行（纯数字）
+        if (/^\d+$/.test(line)) {
+            i++;
+            if (i >= lines.length) break;
+            
+            // 下一行应该是时间行
+            const timeLine = lines[i].trim();
+            i++;
+            
+            // 解析时间行：HH:MM:SS,mmm --> HH:MM:SS,mmm
+            const timeMatch = timeLine.match(
+                /(\d{2}:\d{2}:\d{2}[,\.]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[,\.]\d{3})/
+            );
+            
+            if (timeMatch) {
+                const startTime = parseSRTTime(timeMatch[1]);
+                const endTime = parseSRTTime(timeMatch[2]);
+                
+                if (startTime !== null && endTime !== null) {
+                    // 收集文本内容（可能有多行）
+                    const textLines = [];
+                    while (i < lines.length && lines[i].trim()) {
+                        textLines.push(lines[i].trim());
+                        i++;
+                    }
+                    
+                    const text = textLines.join('\n');
+                    
+                    if (text) {
+                        // 使用startTime作为主要时间（兼容LRC格式）
+                        result.push({
+                            time: startTime,
+                            end_time: endTime,
+                            text: text
+                        });
+                    }
+                }
+            }
+        } else {
+            i++;
+        }
+    }
+    
+    // 按时间排序
+    result.sort((a, b) => a.time - b.time);
+    
+    return result;
+}
+
+/**
  * 解析纯文本歌词
  * 返回格式：[{ time: null, text: string }, ...]
  */
@@ -109,8 +213,8 @@ function parsePlainText(lyrics) {
  * 解析歌词（自动检测格式）
  * 返回格式：
  * {
- *   type: 'lrc' | 'plain',
- *   lines: [{ time: number | null, text: string }, ...]
+ *   type: 'lrc' | 'srt' | 'plain',
+ *   lines: [{ time: number | null, text: string, end_time?: number }, ...]
  * }
  */
 export function parseLyrics(lyrics) {
@@ -125,6 +229,12 @@ export function parseLyrics(lyrics) {
         const lines = parseLRC(lyrics);
         return {
             type: 'lrc',
+            lines
+        };
+    } else if (isSRTFormat(lyrics)) {
+        const lines = parseSRT(lyrics);
+        return {
+            type: 'srt',
             lines
         };
     } else {

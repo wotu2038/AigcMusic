@@ -4,7 +4,7 @@
 from django.db import models
 from django.utils import timezone
 from apps.users.models import User
-from utils.storage.oss_storage import audio_storage, image_storage
+from utils.storage.oss_storage import audio_storage, image_storage, file_storage
 
 
 # 音乐类型选择
@@ -37,6 +37,14 @@ class Song(models.Model):
     audio_file = models.FileField(upload_to='songs/', storage=audio_storage, blank=True, null=True, verbose_name='音频文件', help_text='支持MP3格式')
     cover_image = models.ImageField(upload_to='covers/', storage=image_storage, blank=True, null=True, verbose_name='封面图片')
     lyrics = models.TextField(blank=True, null=True, verbose_name='歌词')
+    lyrics_file = models.FileField(
+        upload_to='lyrics/', 
+        storage=file_storage, 
+        blank=True, 
+        null=True, 
+        verbose_name='歌词文件',
+        help_text='支持LRC或SRT格式文件，上传后会自动解析并填充到歌词字段'
+    )
     genre = models.CharField(max_length=50, choices=GENRE_CHOICES, blank=True, null=True, verbose_name='音乐类型', db_index=True)
     play_count = models.IntegerField(default=0, verbose_name='播放次数', db_index=True)
     like_count = models.IntegerField(default=0, verbose_name='点赞数', db_index=True)

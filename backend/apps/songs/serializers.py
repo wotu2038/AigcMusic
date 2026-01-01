@@ -19,7 +19,7 @@ class SongSerializer(serializers.ModelSerializer):
         fields = (
             'song_id', 'title', 'artist', 'album', 'duration', 
             'formatted_duration', 'audio_file', 'cover_image',
-            'file_url', 'cover_url', 'lyrics', 
+            'file_url', 'cover_url', 'lyrics', 'lyrics_file',
             'genre', 'genre_display', 'play_count', 'like_count', 'file_size', 
             'bitrate', 'sample_rate', 'is_active', 'created_at', 'updated_at'
         )

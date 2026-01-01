@@ -60,16 +60,16 @@ function SongDetail() {
                 <div className="song-main-content">
                     {/* 左侧：封面、信息 */}
                     <div className="song-left-section">
-                        {song.cover_url && (
-                            <div className="song-cover">
-                                <img src={song.cover_url} alt={song.title} />
-                            </div>
-                        )}
-                        
-                        <div className="song-meta-info">
-                            {song.album && <span>专辑: {song.album}</span>}
-                            <span>|</span>
-                            <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
+                {song.cover_url && (
+                    <div className="song-cover">
+                        <img src={song.cover_url} alt={song.title} />
+                    </div>
+                )}
+                
+                <div className="song-meta-info">
+                    {song.album && <span>专辑: {song.album}</span>}
+                    <span>|</span>
+                    <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
                         </div>
                     </div>
                     

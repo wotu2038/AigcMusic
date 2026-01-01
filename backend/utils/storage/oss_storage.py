@@ -271,3 +271,6 @@ image_storage = OSSStorage(base_path='images')
 # 视频文件存储
 video_storage = OSSStorage(base_path='videos')
 
+# 文件存储（用于歌词文件等）
+file_storage = OSSStorage(base_path='files')
+
