@@ -129,6 +129,107 @@
     text-decoration-color: #5a6edc;
 }
 
+/* AI弹幕控制区域 */
+.song-danmaku-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5px;
+    margin-left: 4px;
+}
+
+.song-danmaku-label {
+    color: #666;
+    font-weight: 500;
+    cursor: default;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+/* Toggle Switch 样式 - 精致现代版 */
+.danmaku-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.danmaku-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.danmaku-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #e0e0e0 0%, #d0d0d0 100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 26px;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.danmaku-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.15),
+        0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.danmaku-toggle-switch input:checked + .danmaku-toggle-slider {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 0 12px rgba(102, 126, 234, 0.4),
+        0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.danmaku-toggle-switch input:checked + .danmaku-toggle-slider:before {
+    transform: translateX(20px);
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.danmaku-toggle-switch:hover .danmaku-toggle-slider {
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 0 16px rgba(102, 126, 234, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.danmaku-toggle-switch:hover input:checked + .danmaku-toggle-slider {
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+        0 0 20px rgba(102, 126, 234, 0.5),
+        0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.danmaku-toggle-switch:active .danmaku-toggle-slider:before {
+    transform: scale(0.95);
+}
+
+.danmaku-toggle-switch:active input:checked + .danmaku-toggle-slider:before {
+    transform: translateX(20px) scale(0.9);
+}
+
 /* 播放器部分：占据整个宽度 */
 .song-player-section {
     width: 100%;

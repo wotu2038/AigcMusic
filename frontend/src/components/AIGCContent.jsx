@@ -9,7 +9,7 @@ import './AIGCContent.css';
  * AIGC内容展示组件
  * 使用宝箱飘动的方式展示AI生成内容
  */
-function AIGCContent({ songId }) {
+function AIGCContent({ songId, enabled = false }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [allContents, setAllContents] = useState([]);
@@ -86,6 +86,11 @@ function AIGCContent({ songId }) {
 
     // 如果没有内容，不显示组件
     if (allContents.length === 0 && lyricVideos.length === 0) {
+        return null;
+    }
+
+    // 如果AI弹幕开关关闭，不显示宝箱
+    if (!enabled) {
         return null;
     }
 

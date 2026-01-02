@@ -309,17 +309,13 @@ function CommentList({ songId }) {
                             <textarea
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
-                                placeholder="评论"
+                                placeholder="@AI 试一试AI评论"
                                 className="comment-input"
                                 rows="3"
                                 disabled={submitting}
                                 maxLength={MAX_COMMENT_LENGTH}
                             />
                             <div className="comment-input-footer">
-                                <div className="comment-input-icons">
-                                    <span className="comment-icon" title="表情">😊</span>
-                                    <span className="comment-icon" title="@提及">@</span>
-                                </div>
                                 <div className="comment-input-actions">
                                     <span className={`comment-char-count ${remainingChars < 20 ? 'comment-char-count-warning' : ''}`}>
                                         {remainingChars}

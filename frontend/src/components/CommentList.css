@@ -88,25 +88,9 @@
 
 .comment-input-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-top: 8px;
-}
-
-.comment-input-icons {
-    display: flex;
-    gap: 12px;
-}
-
-.comment-icon {
-    font-size: 18px;
-    cursor: pointer;
-    color: #666;
-    transition: color 0.3s;
-}
-
-.comment-icon:hover {
-    color: #667eea;
 }
 
 .comment-input-actions {

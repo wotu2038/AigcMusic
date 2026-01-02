@@ -17,9 +17,24 @@ function SongDetail() {
     const [error, setError] = useState('');
     const [showVideoPlayer, setShowVideoPlayer] = useState(false);
     
+    // AI弹幕开关状态（从localStorage读取，默认false）
+    const [isDanmakuEnabled, setIsDanmakuEnabled] = useState(() => {
+        const saved = localStorage.getItem('aigc_danmaku_enabled');
+        return saved === 'true';
+    });
+    
     useEffect(() => {
         loadSong();
     }, [id]);
+    
+    // 保存AI弹幕开关状态到localStorage
+    useEffect(() => {
+        localStorage.setItem('aigc_danmaku_enabled', isDanmakuEnabled.toString());
+    }, [isDanmakuEnabled]);
+    
+    const toggleDanmaku = () => {
+        setIsDanmakuEnabled(!isDanmakuEnabled);
+    };
     
     const loadSong = async () => {
         setLoading(true);
@@ -70,19 +85,27 @@ function SongDetail() {
                 
                 <div className="song-meta-info">
                     {song.album && <span>专辑: {song.album}</span>}
-                    {song.album && <span>|</span>}
-                    <span>时长: {song.formatted_duration || `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}`}</span>
+                    {song.album && song.mv_video_url && <span>|</span>}
                     {song.mv_video_url && (
-                        <>
-                            <span>|</span>
-                            <span 
-                                className="song-mv-link" 
-                                onClick={() => setShowVideoPlayer(true)}
-                            >
-                                ▶ MV视频
-                            </span>
-                        </>
+                        <span 
+                            className="song-mv-link" 
+                            onClick={() => setShowVideoPlayer(true)}
+                        >
+                            ▶ MV视频
+                        </span>
                     )}
+                    {(song.album || song.mv_video_url) && <span>|</span>}
+                    <span className="song-danmaku-control">
+                        <span className="song-danmaku-label">AI弹幕</span>
+                        <label className="danmaku-toggle-switch">
+                            <input
+                                type="checkbox"
+                                checked={isDanmakuEnabled}
+                                onChange={toggleDanmaku}
+                            />
+                            <span className="danmaku-toggle-slider"></span>
+                        </label>
+                    </span>
                 </div>
                     </div>
                     
@@ -99,7 +122,7 @@ function SongDetail() {
             </div>
             
             {/* AIGC内容展示 */}
-            <AIGCContent songId={song.song_id} />
+            <AIGCContent songId={song.song_id} enabled={isDanmakuEnabled} />
             
             {/* MV视频播放器弹窗 */}
             {showVideoPlayer && song.mv_video_url && (
