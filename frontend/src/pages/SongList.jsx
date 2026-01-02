@@ -60,6 +60,7 @@ function SongList() {
     const [searchKeyword, setSearchKeyword] = useState(() => cachedKeyword); // 实际用于搜索的关键词（只有点击搜索时才更新）
     const [page, setPage] = useState(() => cachedPage);
     const [totalPages, setTotalPages] = useState(() => cachedTotalPages);
+    const [totalRecords, setTotalRecords] = useState(0);
     
     // 搜索下拉菜单相关状态
     const [suggestions, setSuggestions] = useState([]);
@@ -152,6 +153,7 @@ function SongList() {
             // 更新状态
             setSongs(songsList);
             setTotalPages(data.pagination?.pages || 1);
+            setTotalRecords(data.pagination?.total || 0);
             
             // 更新缓存
             cachedSongs = songsList;
@@ -369,25 +371,34 @@ function SongList() {
                         </table>
                     </div>
                     
-                    {totalPages > 1 && (
+                    {totalRecords > 0 && (
                         <div className="pagination">
-                            <button
-                                onClick={() => setPage(p => Math.max(1, p - 1))}
-                                disabled={page === 1}
-                                className="btn btn-secondary"
-                            >
-                                上一页
-                            </button>
-                            <span className="pagination-info">
-                                {page} / {totalPages}
-                            </span>
-                            <button
-                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                                disabled={page === totalPages}
-                                className="btn btn-secondary"
-                            >
-                                下一页
-                            </button>
+                            <div className="pagination-info">
+                                <span className="pagination-total">共 {totalRecords} 条记录</span>
+                                {totalPages > 0 && (
+                                    <span className="pagination-page">
+                                        第 {page} 页 / 共 {totalPages} 页
+                                    </span>
+                                )}
+                            </div>
+                            {totalPages > 1 && (
+                                <div className="pagination-controls">
+                                    <button
+                                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                                        disabled={page === 1}
+                                        className="btn btn-secondary"
+                                    >
+                                        上一页
+                                    </button>
+                                    <button
+                                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={page === totalPages}
+                                        className="btn btn-secondary"
+                                    >
+                                        下一页
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
                 </>
