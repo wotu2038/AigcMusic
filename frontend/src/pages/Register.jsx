@@ -79,7 +79,7 @@ function Register() {
     return (
         <div className="register-container">
             <div className="register-card">
-                <h2>🎵 AigcMusic</h2>
+                <h2>🎵 MusiMusi</h2>
                 <p className="register-subtitle">创建您的音乐账户</p>
                 
                 <ErrorMessage message={error} onClose={() => setError('')} />

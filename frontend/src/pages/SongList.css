@@ -36,19 +36,80 @@
 .search-form {
     display: flex;
     gap: 10px;
+    position: relative;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
 }
 
 .search-input {
+    width: 100%;
     padding: 10px 16px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    min-width: 250px;
+    box-sizing: border-box;
 }
 
 .search-input:focus {
     outline: none;
     border-color: #667eea;
+}
+
+/* 搜索下拉菜单 */
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.search-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.search-dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-dropdown-text {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.search-dropdown-loading {
+    padding: 12px 16px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+/* 关键词高亮 */
+.search-highlight {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 500;
+    padding: 0 2px;
+    border-radius: 2px;
 }
 
 .song-list {

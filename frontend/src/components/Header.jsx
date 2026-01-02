@@ -20,7 +20,7 @@ function Header() {
         <header className="header">
             <div className="header-content">
                 <Link to="/" className="header-logo">
-                    <h1>🎵 AigcMusic</h1>
+                    <h1>🎵 MusiMusi</h1>
                 </Link>
                 
                 <nav className="header-nav">
