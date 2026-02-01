@@ -194,7 +194,12 @@ services:
       timeout: 10s
       start_period: 40s
       retries: 3
-    command: celery -A config beat -l info --schedule=/app/celerybeat/celerybeat-schedule
+    command: >
+      sh -c "
+        mkdir -p /app/celerybeat &&
+        chmod 777 /app/celerybeat &&
+        celery -A config beat -l info --schedule=/app/celerybeat/celerybeat-schedule
+      "
 
   # 前端服务（React SPA）
   frontend:
