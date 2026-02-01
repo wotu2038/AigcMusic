@@ -207,6 +207,34 @@ docker-compose exec web python manage.py shell
 >>> print(settings.CORS_ALLOWED_ORIGINS)
 ```
 
+#### 连接重置错误（ERR_CONNECTION_RESET）
+
+如果访问 `http://your-ip:8025` 出现连接重置错误，通常是因为nginx服务未启动：
+
+```bash
+# 1. 检查nginx服务状态
+docker compose ps | grep nginx
+
+# 2. 如果nginx未启动，启动nginx和frontend服务
+docker compose --profile production up -d nginx frontend
+
+# 3. 验证服务状态
+docker compose ps
+
+# 4. 检查端口是否监听
+netstat -tlnp | grep 8025
+# 或
+ss -tlnp | grep 8025
+
+# 5. 检查nginx日志
+docker compose logs nginx --tail 50
+```
+
+**注意**：生产环境必须启动nginx服务，因为：
+- nginx作为反向代理，统一处理所有请求
+- web服务的端口在生产环境配置中被注释掉了
+- 所有请求（前端、API、Admin）都通过nginx转发
+
 ## 📚 文档
 
 > **注意**：项目文档位于 `docs/` 文件夹中，但该文件夹已配置为不提交到 Git 仓库（见 `.gitignore`）。
@@ -381,9 +409,23 @@ VITE_API_URL=http://your-production-ip:8025/api
 # 构建Docker镜像
 docker-compose build
 
-# 启动生产环境（包含Nginx反向代理）
-docker-compose --profile production up -d
+# 启动基础服务（web、redis、celery、celery-beat）
+docker-compose up -d
+
+# 启动生产环境服务（包含Nginx反向代理和前端）
+docker-compose --profile production up -d nginx frontend
 ```
+
+**重要提示**：
+- 生产环境必须启动 `nginx` 和 `frontend` 服务才能正常访问
+- 如果访问 `http://your-ip:8025` 出现连接重置错误，请检查是否已启动nginx服务：
+  ```bash
+  # 检查nginx服务状态
+  docker compose ps | grep nginx
+  
+  # 如果nginx未启动，执行：
+  docker compose --profile production up -d nginx frontend
+  ```
 
 #### 6. 初始化数据库
 
@@ -436,18 +478,22 @@ git pull origin main
 # 3. 如果有Dockerfile变更，需要重新构建
 docker-compose build
 
-# 4. 重启服务（零停机时间，滚动更新）
-docker-compose --profile production up -d --build
+# 4. 重启基础服务（零停机时间，滚动更新）
+docker-compose up -d --build
 
-# 5. 如果有数据库迁移，执行迁移
+# 5. 确保nginx和frontend服务已启动（生产环境必需）
+docker-compose --profile production up -d nginx frontend
+
+# 6. 如果有数据库迁移，执行迁移
 docker-compose exec web python manage.py migrate
 
-# 6. 如果有静态文件变更，收集静态文件
+# 7. 如果有静态文件变更，收集静态文件
 docker-compose exec web python manage.py collectstatic --noinput
 
-# 7. 验证服务
+# 8. 验证服务
 docker-compose ps
 docker-compose logs -f web
+docker-compose logs -f nginx
 ```
 
 #### 方法二：仅拉取代码（不重启服务）
