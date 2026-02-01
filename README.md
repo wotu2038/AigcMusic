@@ -235,6 +235,55 @@ docker compose logs nginx --tail 50
 - web服务的端口在生产环境配置中被注释掉了
 - 所有请求（前端、API、Admin）都通过nginx转发
 
+#### celery-beat 权限错误
+
+如果 `celery-beat` 服务不断重启，日志中出现 `Permission denied: '/app/celerybeat/celerybeat-schedule'` 错误：
+
+```bash
+# 1. 检查celery-beat日志
+docker compose logs celery-beat --tail 50
+
+# 2. 如果看到权限错误，在宿主机上创建目录并设置权限
+cd /opt/AigcMusic/backend  # 或你的项目路径
+mkdir -p celerybeat
+chmod 777 celerybeat
+
+# 3. 重启celery-beat服务
+docker compose restart celery-beat
+
+# 4. 验证服务启动成功
+docker compose logs celery-beat --tail 20
+# 应该看到：beat: Starting...
+```
+
+**如果还有问题，可以尝试：**
+
+```bash
+# 删除可能存在的旧文件
+cd /opt/AigcMusic/backend
+rm -rf celerybeat
+mkdir -p celerybeat
+chmod 777 celerybeat
+
+# 完全重启服务
+cd /opt/AigcMusic
+docker compose down
+docker compose up -d
+
+# 查看日志
+docker compose logs celery-beat --tail 50
+```
+
+**原因说明**：
+- `/app` 目录通过 volume 挂载到宿主机的 `./backend:/app`
+- 容器内以 `django` 用户（UID 1000）运行
+- 宿主机上的目录可能属于 root 用户，容器内用户无权限写入
+- 需要预先创建目录并设置适当权限
+
+**持久化说明**：
+- 调度文件存储在 `backend/celerybeat/` 目录中
+- 该目录会持久化到宿主机，容器重启后不会丢失调度信息
+
 ## 📚 文档
 
 > **注意**：项目文档位于 `docs/` 文件夹中，但该文件夹已配置为不提交到 Git 仓库（见 `.gitignore`）。
