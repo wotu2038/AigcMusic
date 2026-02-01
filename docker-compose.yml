@@ -179,7 +179,6 @@ services:
       ALIBABA_WANXIANG_MODEL_VIDEO: ${ALIBABA_WANXIANG_MODEL_VIDEO}
     volumes:
       - ./backend:/app
-      - celerybeat_data:/tmp/celerybeat
     depends_on:
       web:
         condition: service_healthy
@@ -194,7 +193,11 @@ services:
       timeout: 10s
       start_period: 40s
       retries: 3
-    command: celery -A config beat -l info --schedule=/tmp/celerybeat/celerybeat-schedule
+    command: >
+      sh -c "
+        mkdir -p /tmp/celerybeat &&
+        celery -A config beat -l info --schedule=/tmp/celerybeat/celerybeat-schedule
+      "
 
   # 前端服务（React SPA）
   frontend:
@@ -239,8 +242,6 @@ volumes:
   static_volume:
     driver: local
   media_volume:
-    driver: local
-  celerybeat_data:
     driver: local
 
 networks:
