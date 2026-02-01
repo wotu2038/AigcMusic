@@ -195,8 +195,8 @@ services:
       retries: 3
     command: >
       sh -c "
-        mkdir -p /tmp/celerybeat &&
-        celery -A config beat -l info --schedule=/tmp/celerybeat/celerybeat-schedule
+        mkdir -p /app/celerybeat &&
+        celery -A config beat -l info --schedule=/app/celerybeat/celerybeat-schedule
       "
 
   # 前端服务（React SPA）
